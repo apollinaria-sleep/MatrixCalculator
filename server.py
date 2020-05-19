@@ -1,6 +1,7 @@
 import flask
 import lib
 
+
 app = flask.Flask('matrix_calculator')
 last_matrix = lib.LastMatrix()
 
@@ -12,7 +13,6 @@ def add_matrix():
         for item in last_matrix.POSSIBLE_ITEMS
         if item in flask.request.args
     }
-    print(args)
     return last_matrix.add_matrix(**args)
 
 
@@ -28,10 +28,10 @@ def difference():
     return difference
 
 
-@app.route('/composition', methods=['GET'])
-def composition():
-    composition = last_matrix.composition()
-    return composition
+@app.route('/multiplication', methods=['GET'])
+def multiplication():
+    multiplication = last_matrix.multiplication()
+    return multiplication
 
 
 def main():

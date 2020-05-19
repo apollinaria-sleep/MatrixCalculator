@@ -17,12 +17,12 @@ class TestLastMatrix(unittest.TestCase):
 
         self.assertEqual(difference, '[[-2  0  2]]')
 
-    def test_composition(self):
+    def test_multiplication(self):
         last_matrix = lib.LastMatrix()
         last_matrix.add_matrix(1, 3, '1 2 3\n', 1, 3, '3 2 1\n')
-        composition = last_matrix.composition()
+        multiplication = last_matrix.multiplication()
 
-        self.assertEqual(composition, '[[3 4 3]]')
+        self.assertEqual(multiplication, '[[3 4 3]]')
 
     def test_unamount(self):
         last_matrix = lib.LastMatrix()
@@ -38,12 +38,12 @@ class TestLastMatrix(unittest.TestCase):
 
         self.assertEqual(difference, 'Incompatible matrices!')
 
-    def test_uncomposition(self):
+    def test_unmultiplication(self):
         last_matrix = lib.LastMatrix()
         last_matrix.add_matrix(1, 3, '1 2 3\n', 3, 1, '3\n2\n1\n')
-        composition = last_matrix.composition()
+        multiplication = last_matrix.multiplication()
 
-        self.assertEqual(composition, 'Incompatible matrices!')
+        self.assertEqual(multiplication, 'Incompatible matrices!')
 
     def test_bad_object_type(self):
         last_matrix = lib.LastMatrix()

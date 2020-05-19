@@ -33,8 +33,8 @@ def difference(main_args):
     print(result)
 
 
-def composition(main_args):
-    result = requests.get(f'http://{main_args.host}:{main_args.port}/composition', params=dict(
+def multiplication(main_args):
+    result = requests.get(f'http://{main_args.host}:{main_args.port}/multiplication', params=dict(
     )).text
     print(result)
 
@@ -42,13 +42,12 @@ def composition(main_args):
 def ask_amount(argument_name):
     user_input = input(f'Please, enter {argument_name}:\n')
     if not user_input:
-        return 1
+          raise Exception('Incorrect input')
     else:
         try:
             return int(user_input)
         except ValueError:
-            print('Incorrect input, assuming 1')
-            return 1
+            raise Exception('Incorrect input')
 
 
 def ask_matrix(argument_name):
@@ -58,14 +57,18 @@ def ask_matrix(argument_name):
 
 
 def add_matrix(main_args):
-    matrix_id = requests.post(f'http://{main_args.host}:{main_args.port}/add_matrix', params=dict(
-        first_rows=ask_amount('number of rows'),
-        first_col=ask_amount('number of columns'),
-        first_matrix=ask_matrix('first matrix'),
-        second_rows=ask_amount('number of rows'),
-        second_col=ask_amount('number of columns'),
-        second_matrix=ask_matrix('second matrix')
-    )).text
+    try:
+        print(requests.post(f'http://{main_args.host}:{main_args.port}/add_matrix', params=dict(
+            first_rows=ask_amount('number of rows'),
+            first_col=ask_amount('number of columns'),
+            first_matrix=ask_matrix('first matrix'),
+            second_rows=ask_amount('number of rows'),
+            second_col=ask_amount('number of columns'),
+            second_matrix=ask_matrix('second matrix')
+        )).text)
+    except Exception as e:
+        print(e)
+        return
 
 
 def main():
