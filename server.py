@@ -2,6 +2,8 @@ import flask
 import lib
 
 
+default_port = 8000
+
 app = flask.Flask('matrix_calculator')
 last_matrix = lib.LastMatrix()
 
@@ -35,7 +37,7 @@ def multiplication():
 
 
 def main():
-    app.run('::', port=8000, debug=True)
+    app.run('::', port=default_port, debug=True)
 
 
 if __name__ == '__main__':

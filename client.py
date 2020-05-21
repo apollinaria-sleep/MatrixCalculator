@@ -1,12 +1,13 @@
 import requests
 import argparse
-import sys
 
+
+default_port = 8000
 
 def create_main_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--host', default='localhost')
-    parser.add_argument('--port', default=8000, type=int)
+    parser.add_argument('--port', default=default_port, type=int)
     return parser
 
 
@@ -42,17 +43,17 @@ def multiplication(main_args):
 def ask_amount(argument_name):
     user_input = input(f'Please, enter {argument_name}:\n')
     if not user_input:
-          raise Exception('Incorrect input')
+          raise TypeError('Incorrect input')
     else:
         try:
             return int(user_input)
         except ValueError:
-            raise Exception('Incorrect input')
+            raise TypeError('Incorrect input')
 
 
 def ask_matrix(argument_name):
     print(f'Please, enter {argument_name}:')
-    matrix = sys.stdin.read()
+    matrix = input()
     return matrix
 
 
@@ -66,7 +67,7 @@ def add_matrix(main_args):
             second_col=ask_amount('number of columns'),
             second_matrix=ask_matrix('second matrix')
         )).text)
-    except Exception as e:
+    except TypeError as e:
         print(e)
         return
 
@@ -84,8 +85,8 @@ def main():
                 amount(main_args)
             elif cmd == 'difference':
                 difference(main_args)
-            elif cmd == 'composition':
-                composition(main_args)
+            elif cmd == 'multiplication':
+                multiplication(main_args)
             elif cmd == 'exit':
                 graceful_exit()
             else:

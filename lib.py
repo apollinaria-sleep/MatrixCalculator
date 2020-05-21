@@ -2,14 +2,8 @@ import numpy as np
 
 
 def change_type(matrix):
-    matrix = list(matrix.split('\n'))
-    if matrix[len(matrix) - 1] == '':
-        matrix.pop()
-    for i in range(len(matrix)):
-        matrix[i] = matrix[i].split(' ')
-        for j in range(len(matrix[i])):
-            matrix[i][j] = int(matrix[i][j])
-    return matrix
+    values = list(map(int, matrix.split(' ')))
+    return values
 
 
 def check(matrix):
@@ -21,9 +15,10 @@ def check(matrix):
 
 class Matrix:
     def __init__(self, rows=1, col=1, matrix=[1]):
-        self.rows = rows
-        self.col = col
+        self.rows = int(rows)
+        self.col = int(col)
         self.matrix = np.array(matrix)
+        self.matrix = np.reshape(self.matrix, (self.rows, self.col))
 
 
 class LastMatrix:
