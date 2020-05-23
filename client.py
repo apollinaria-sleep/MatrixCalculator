@@ -1,54 +1,57 @@
 import requests
 import argparse
+from config import INPUT, DEFAULT_HOST, DEFAULT_PORT, COMMANDS, EXIT
 
 
-default_port = 8000
+SERVER_CONNECTION=f'http://{main_args.host}:{main_args.port}'
+
 
 def create_main_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--host', default='localhost')
-    parser.add_argument('--port', default=default_port, type=int)
+    parser.add_argument('--host', default=DEFAULT_HOST)
+    parser.add_argument('--port', default=DEFAULT_PORT, type=int)
     return parser
 
 
 def graceful_exit():
-    ack = input('Are you sure you want to leave (Y/N)?\n')
-    if ack == 'Y':
-        print('Goodbye!')
+    ack = input(EXIT['QUESTION'])
+    if ack == EXIT['YES']:
+        print(EXIT['ANSWER_FIRST'])
         exit()
-    elif ack == 'N':
-        print('OK, let\'s continue')
+    elif ack == EXIT['NO']:
+        print(EXIT['ANSWER_SECOND'])
     else:
-        print('Unknown input, but continue')
+        print(EXIT['ANSWER_THIRD'])
 
 
 def amount(main_args):
-    result = requests.get(f'http://{main_args.host}:{main_args.port}/amount', params=dict(
+    result = requests.get(SERVER_CONNECTION + '/' + COMMANDS['GET_FIRST'], params=dict(
     )).text
     print(result)
 
 
 def difference(main_args):
-    result = requests.get(f'http://{main_args.host}:{main_args.port}/difference', params=dict(
+    result = requests.get(SERVER_CONNECTION + '/' + COMMANDS['GET_SECOND'], params=dict(
     )).text
     print(result)
 
 
 def multiplication(main_args):
-    result = requests.get(f'http://{main_args.host}:{main_args.port}/multiplication', params=dict(
+    result = requests.get(SERVER_CONNECTION + '/' + COMMANDS['GET_THIRD'], params=dict(
     )).text
     print(result)
 
 
 def ask_amount(argument_name):
-    user_input = input(f'Please, enter {argument_name}:\n')
+    print(f'Please, enter {argument_name}:')
+    user_input = input()
     if not user_input:
-          raise TypeError('Incorrect input')
+          raise TypeError(INPUT['ERROR'])
     else:
         try:
             return int(user_input)
         except ValueError:
-            raise TypeError('Incorrect input')
+            raise TypeError(INPUT['ERROR'])
 
 
 def ask_matrix(argument_name):
@@ -59,7 +62,7 @@ def ask_matrix(argument_name):
 
 def add_matrix(main_args):
     try:
-        print(requests.post(f'http://{main_args.host}:{main_args.port}/add_matrix', params=dict(
+        print(requests.post(SERVER_CONNECTION + '/' + COMMANDS['POST_FIRST'], params=dict(
             first_rows=ask_amount('number of rows'),
             first_col=ask_amount('number of columns'),
             first_matrix=ask_matrix('first matrix'),
@@ -78,16 +81,16 @@ def main():
 
     while True:
         try:
-            cmd = input('Enter command>\n')
-            if cmd == 'add_matrix':
+            cmd = input(INPUT['COMMAND'])
+            if cmd == COMMANDS['POST_FIRST']:
                 add_matrix(main_args)
-            elif cmd == 'amount':
+            elif cmd == COMMANDS['GET_FIRST']:
                 amount(main_args)
-            elif cmd == 'difference':
+            elif cmd == COMMANDS['GET_SECOND']:
                 difference(main_args)
-            elif cmd == 'multiplication':
+            elif cmd == COMMANDS['GET_THIRD']:
                 multiplication(main_args)
-            elif cmd == 'exit':
+            elif cmd == COMMANDS['EXIT']:
                 graceful_exit()
             else:
                 print(f'Unknown command: {cmd}')
